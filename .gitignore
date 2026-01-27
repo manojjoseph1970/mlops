@@ -1,0 +1,8 @@
+venv/
+mlruns/
+logs/
+mlops_project.egg-info/
+*.json
+*.csv
+*.db
+*.pyc

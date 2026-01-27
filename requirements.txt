@@ -1,0 +1,11 @@
+pandas
+numpy
+google-cloud-storage
+scikit-learn
+pyyaml
+imblearn
+xgboost
+mlflow
+lightgbm
+joblib
+scipy

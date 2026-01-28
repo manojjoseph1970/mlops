@@ -25,28 +25,32 @@ pipeline {
                     '''
             } 
         }
-        stage('Building and pushing docker image to GCR') {
-            steps {
-                 
-                     withCredentials([file(credentialsId:'gcp-key', variable: 'GCP_APP_CREDENTIALS')]) {
-                       script{
-                         echo 'sBuilding and pushing docker image to GCR...'
-                        sh '''
-                            export PATH=${GCLOUD_PATH}:$PATH
-                            export GOOGLE_APPLICATION_CREDENTIALS=$GCP_APP_CREDENTIALS
-                            gcloud auth activate-service-account --key-file=${GCP_APP_CREDENTIALS}
-                            gcloud config set project ${GCP_PROJECT}
-                            gcloud auth configure-docker --quiet    
-                            IMAGE_NAME=gcr.io/${GCP_PROJECT}/mlops-image:latest
-                            docker build -t $IMAGE_NAME .
-                            docker push $IMAGE_NAME
-                        '''
-                       } 
-            } 
-        }
+      stage('Build & Push Docker image to GCR') {
+                        steps {
+                            withCredentials([file(credentialsId: 'gcp-key', variable: 'GCP_KEYFILE')]) {
+                            sh '''
+                                set -e
+
+                                export PATH=${GCLOUD_PATH}:$PATH
+
+                                # Auth for gcloud using the service account key
+                                gcloud auth activate-service-account --key-file="$GCP_KEYFILE"
+                                gcloud config set project "${GCP_PROJECT}"
+
+                                # Configure Docker auth for GCR
+                                gcloud auth configure-docker --quiet
+
+                                IMAGE_NAME="gcr.io/${GCP_PROJECT}/mlops-image:${BUILD_NUMBER}"
+                                docker build -t "$IMAGE_NAME" .
+                                docker push "$IMAGE_NAME"
+
+                                
+                            '''
+                            }
+                        }
+                    }
     }
 }
-    }
  
 
 

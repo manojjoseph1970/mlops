@@ -49,7 +49,7 @@ pipeline{
                     which gcloud
                     gcloud --version
                  '''
-                }#
+                }
             }
     }
 

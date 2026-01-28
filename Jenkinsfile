@@ -11,8 +11,7 @@ pipeline {
                     checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/manojjoseph1970/mlops.git']])
             } 
         }
-    }
-    stages {
+    
         stage('setting up virtual enviornment and installing dependencies') {
             steps {
                  echo 'setting up virtual enviornment and installing dependencies...'

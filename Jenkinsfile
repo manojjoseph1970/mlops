@@ -4,7 +4,7 @@ pipeline{
     environment {
         VENV_DIR = 'venv'
         GCP_PROJECT = "mlops-485220"
-        GCLOUD_PATH = "/var/jenkins_home/google-cloud-sdk/bin"
+        GCLOUD_PATH = "/var/jenkins_home/gcloud/google-cloud-sdk/bin"
     }
 
     stages{
@@ -30,21 +30,37 @@ pipeline{
                 }
             }
         }
-        stage('Debug gcloud path') {
-        steps {
-            sh '''
-            echo "PATH=$PATH"
-            which gcloud || true
-            gcloud --version || true
+    stage('Debug gcloud path') {
+    steps {
+        sh '''
+        echo "PATH=$PATH"
+        which gcloud || true
+        gcloud --version || true
 
-            echo "Checking configured GCLOUD_PATH"
-            echo "$GCLOUD_PATH"
-            ls -ld "$GCLOUD_PATH" || true
-            ls -l "$GCLOUD_PATH/gcloud" || true
-            '''
-        }
-        }
-        stage('Building and Pushing Docker Image to GCR'){
+        echo "Checking configured GCLOUD_PATH"
+        echo "$GCLOUD_PATH"
+        ls -ld "$GCLOUD_PATH" || true
+        ls -l "$GCLOUD_PATH/gcloud" || true
+        '''
+    }
+    }
+    stage('Building and Pushing Docker Image to GCR'){
+            steps{
+                withCredentials([file(credentialsId: 'gcp-key', variable: 'GCP_KEYFILE')]) {
+                        sh '''
+                            export GOOGLE_APPLICATION_CREDENTIALS="$GCP_KEYFILE"
+
+                            echo "GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS"
+                            ls -l "$GOOGLE_APPLICATION_CREDENTIALS"
+
+                            python -c "import google.auth; print(google.auth.default())"
+                        '''
+                }
+            }
+    }
+
+
+     /*   stage('Building and Pushing Docker Image to GCR'){
             steps{
                 withCredentials([file(credentialsId: 'gcp-key' , variable : 'GOOGLE_APPLICATION_CREDENTIALS')]){
                     script{
@@ -68,6 +84,7 @@ pipeline{
                 }
             }
         }
+        */
     }
 }
 

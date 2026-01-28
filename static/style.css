@@ -1,0 +1,155 @@
+/* Base reset */
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+
+  /* center everything */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #222;
+}
+
+/* Main container card */
+.container {
+  width: min(800px, 92vw);
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.25);
+
+  padding: 32px 38px;
+
+  /* center text headings */
+  text-align: center;
+}
+
+/* Title + description */
+.container h2 {
+  margin: 0 0 8px 0;
+  color: #1e3c72;
+  font-size: 24px;
+}
+
+.container p {
+  margin: 0 0 22px 0;
+  color: #555;
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+
+/* Form: center + vertical stacking */
+form {
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: stretch; /* makes inputs full width */
+}
+
+/* Each field block */
+.form-group {
+  text-align: left;       /* labels align left */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* label */
+label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+/* inputs & selects full width */
+input[type="number"],
+select {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 8px;
+  border: 1px solid #cfcfcf;
+  font-size: 14px;
+  background: #fff;
+  transition: 0.2s ease;
+}
+
+input[type="number"]:focus,
+select:focus {
+  outline: none;
+  border-color: #2a5298;
+  box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.15);
+}
+
+/* Predict button at bottom */
+button[type="submit"] {
+  margin-top: 10px;
+  width: 100%;
+  padding: 13px 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+
+  background: #2a5298;
+  color: white;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+button[type="submit"]:hover {
+  background: #1e3c72;
+  transform: translateY(-1px);
+}
+
+/* Highlighted prediction result BELOW the button */
+.prediction-box {
+  margin-top: 18px;
+  text-align: left;
+
+  padding: 16px 16px;
+  border-radius: 12px;
+
+  background: #f3f7ff;
+  border: 1px solid rgba(42, 82, 152, 0.25);
+  border-left: 6px solid #2a5298;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.10);
+}
+
+.prediction-box h3 {
+  margin: 0 0 8px 0;
+  color: #1e3c72;
+}
+
+.prediction-box p {
+  margin: 0;
+  color: #222;
+  font-size: 15px;
+}
+
+.prediction-box strong {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(42, 82, 152, 0.12);
+  border: 1px solid rgba(42, 82, 152, 0.25);
+  color: #1e3c72;
+  font-weight: 800;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .container {
+    padding: 24px 18px;
+  }
+}

@@ -3,6 +3,6 @@ mlruns/
 logs/
 mlops_project.egg-info/
 *.json
+*.pyc
 *.csv
 *.db
-*.pyc

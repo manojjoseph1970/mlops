@@ -18,5 +18,6 @@ RUN pip install --no-cache-dir -e .
 
 EXPOSE 5000
 
-CMD ["python", "pipeline/training_pipeline.py","app.py"]
+#CMD ["python", "pipeline/training_pipeline.py","app.py"]
 
+CMD sh -c "python pipeline/training_pipeline.py && exec python app.py"

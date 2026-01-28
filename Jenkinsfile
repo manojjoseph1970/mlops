@@ -4,8 +4,7 @@ pipeline{
     environment {
         VENV_DIR = 'venv'
         GCP_PROJECT = "mlops-485220"
-        GCLOUD_PATH = "/var/jenkins_home/gcloud/google-cloud-sdk/bin"
-    }
+     }
 
     stages{
         stage('Cloning Github repo to Jenkins'){
@@ -47,14 +46,22 @@ pipeline{
     stage('Building and Pushing Docker Image to GCR'){
             steps{
                 withCredentials([file(credentialsId: 'gcp-key', variable: 'GCP_KEYFILE')]) {
-                        sh '''
-                            export GOOGLE_APPLICATION_CREDENTIALS="$GCP_KEYFILE"
+                sh '''
+                    set -e
 
-                            echo "GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS"
-                            ls -l "$GOOGLE_APPLICATION_CREDENTIALS"
+                    # Use the same venv you created earlier
+                    . ${VENV_DIR}/bin/activate
+                    python -m pip install -U google-auth google-cloud-storage
 
-                            python -c "import google.auth; print(google.auth.default())"
-                        '''
+                    export GOOGLE_APPLICATION_CREDENTIALS="$GCP_KEYFILE"
+
+                    # Confirm ADC + python libs work
+                    python -c "import google.auth; print(google.auth.default())"
+
+                    # Confirm gcloud exists
+                    which gcloud
+                    gcloud --version
+                 '''
                 }
             }
     }
@@ -66,9 +73,7 @@ pipeline{
                     script{
                         echo 'Building and Pushing Docker Image to GCR.............'
                         sh '''
-                        export PATH=$PATH:${GCLOUD_PATH}
-
-
+                        
                         gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
 
                         gcloud config set project ${GCP_PROJECT}

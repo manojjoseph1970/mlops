@@ -22,7 +22,7 @@ pipeline {
                         . ${VENV_DIR}/bin/activate
                         pip install --upgrade pip
                         pip install -e .
-                        pip install -U google-cloud-storage
+                        
                     '''
             } 
         }
@@ -35,8 +35,8 @@ pipeline {
                                 export PATH=${GCLOUD_PATH}:$PATH
                                 echo $GOOGLE_APPLICATION_CREDENTIALS
                                 ls -l $GOOGLE_APPLICATION_CREDENTIALS
-                                python -c "from google.cloud import storage; print(storage.Client().project)"
                                 
+
                                 # Auth for gcloud using the service account key
                                 gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
                                 gcloud config set project "${GCP_PROJECT}"

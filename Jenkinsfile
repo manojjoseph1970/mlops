@@ -5,6 +5,7 @@ pipeline {
         GCP_PROJECT = 'mlops-485220'
         GCP_CREDENTIALS = credentials('gcp-service-account-key')
         GCLOUD_PATH = '/var/jenkins_home/gcloud/google-cloud-sdk/bin'
+    }
     stages {
         stage('Cloning Repository to Jenkins Workspace') {
             steps {
@@ -45,7 +46,7 @@ pipeline {
     }
 }
     }
-}
+ 
 
 
 

@@ -3,7 +3,7 @@ pipeline {
     environment {
         VENV_DIR = 'venv'
         GCP_PROJECT = 'mlops-485220'
-        GCP_CREDENTIALS = credentials('gcp-service-account-key')
+        GCP_CREDENTIALS = credentials('gcp-key')
         GCLOUD_PATH = '/var/jenkins_home/gcloud/google-cloud-sdk/bin'
     }
     stages {
@@ -28,7 +28,7 @@ pipeline {
         stage('Building and pushing docker image to GCR') {
             steps {
                  
-                     withCredentials([file(credentialsId: 'gcp-key', variable: 'GCP_APP_CREDENTIALS')]) {
+                     withCredentials([file(credentialsId:'gcp-key', variable: 'GCP_APP_CREDENTIALS')]) {
                        script{
                          echo 'sBuilding and pushing docker image to GCR...'
                         sh '''

@@ -33,6 +33,8 @@ pipeline {
                          echo 'sBuilding and pushing docker image to GCR...'
                         sh '''
                             export PATH=${GCLOUD_PATH}:$PATH
+                            export GOOGLE_APPLICATION_CREDENTIALS=$GCP_APP_CREDENTIALS
+                            python -c "from google.cloud import storage; print(storage.Client().project)"
                             gcloud auth activate-service-account --key-file=${GCP_APP_CREDENTIALS}
                             gcloud config set project ${GCP_PROJECT}
                             gcloud auth configure-docker --quiet    

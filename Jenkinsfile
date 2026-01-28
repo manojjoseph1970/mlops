@@ -30,7 +30,20 @@ pipeline{
                 }
             }
         }
+        stage('Debug gcloud path') {
+        steps {
+            sh '''
+            echo "PATH=$PATH"
+            which gcloud || true
+            gcloud --version || true
 
+            echo "Checking configured GCLOUD_PATH"
+            echo "$GCLOUD_PATH"
+            ls -ld "$GCLOUD_PATH" || true
+            ls -l "$GCLOUD_PATH/gcloud" || true
+            '''
+        }
+        }
         stage('Building and Pushing Docker Image to GCR'){
             steps{
                 withCredentials([file(credentialsId: 'gcp-key' , variable : 'GOOGLE_APPLICATION_CREDENTIALS')]){

@@ -29,20 +29,7 @@ pipeline{
                 }
             }
         }
-    stage('Debug gcloud path') {
-    steps {
-        sh '''
-        echo "PATH=$PATH"
-        which gcloud || true
-        gcloud --version || true
-
-        echo "Checking configured GCLOUD_PATH"
-        echo "$GCLOUD_PATH"
-        ls -ld "$GCLOUD_PATH" || true
-        ls -l "$GCLOUD_PATH/gcloud" || true
-        '''
-    }
-    }
+   
     stage('testing Google enviornment before building docker image'){
             steps{
                 withCredentials([file(credentialsId: 'gcp-key', variable: 'GCP_KEYFILE')]) {
@@ -51,7 +38,7 @@ pipeline{
 
                     # Use the same venv you created earlier
                     . ${VENV_DIR}/bin/activate
-                    python -m pip install -U google-auth google-cloud-storage
+                    #python -m pip install -U google-auth google-cloud-storage
 
                     export GOOGLE_APPLICATION_CREDENTIALS="$GCP_KEYFILE"
 
@@ -62,7 +49,7 @@ pipeline{
                     which gcloud
                     gcloud --version
                  '''
-                }
+                }#
             }
     }
 

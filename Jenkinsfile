@@ -2,8 +2,9 @@ pipeline {
     agent any
     environment {
         VENV_DIR = 'venv'
-    }
-
+        GCP_PROJECT = 'mlops-485220'
+        GCP_CREDENTIALS = credentials('gcp-service-account-key')
+        GCLOUD_PATH = '/var/jenkins_home/gcloud/google-cloud-sdk/bin'
     stages {
         stage('Cloning Repository to Jenkins Workspace') {
             steps {
@@ -23,6 +24,26 @@ pipeline {
                     '''
             } 
         }
+        stage('Building and pushing docker image to GCR') {
+            steps {
+                 
+                     withCredentials([file(credentialsId: 'gcp-key', variable: 'GCP_APP_CREDENTIALS')]) {
+                       script{
+                         echo 'sBuilding and pushing docker image to GCR...'
+                        sh '''
+                            export PATH=${GCLOUD_PATH}:$PATH
+                            gcloud auth activate-service-account --key-file=${GCP_APP_CREDENTIALS}
+                            gcloud config set project ${GCP_PROJECT}
+                            gcloud auth configure-docker --quiet    
+                            IMAGE_NAME=gcr.io/${GCP_PROJECT}/mlops-image:latest
+                            docker build -t $IMAGE_NAME .
+                            docker push $IMAGE_NAME
+                        '''
+                       } 
+            } 
+        }
+    }
+}
     }
 }
 

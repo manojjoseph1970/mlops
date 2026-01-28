@@ -1,0 +1,19 @@
+docker exec -u root -it jenkins-dind bash
+----Install prerequisites
+apt-get update
+apt-get install -y --no-install-recommends ca-certificates curl gnupg
+--Add Google Cloud APT repo key (modern way)
+install -m 0755 -d /usr/share/keyrings
+curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
+  | gpg --dearmor -o /usr/share/keyrings/google-cloud.gpg
+chmod a+r /usr/share/keyrings/google-cloud.gpg
+--Add the Google Cloud SDK repository (with signed-by)
+echo "deb [signed-by=/usr/share/keyrings/google-cloud.gpg] https://packages.cloud.google.com/apt cloud-sdk main" \
+  > /etc/apt/sources.list.d/google-cloud-sdk.list
+
+---Install Google Cloud CLI
+ apt-get update
+apt-get install -y --no-install-recommends google-cloud-cli
+---- verify
+gcloud --version
+exit

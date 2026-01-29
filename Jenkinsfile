@@ -90,7 +90,7 @@ pipeline{
 
                         gcloud auth configure-docker --quiet
 
-                        gloud run deploy ml-project-service --image gcr.io/${GCP_PROJECT}/ml-project:latest --platform managed --region us-east1 --allow-unauthenticated
+                        gcloud run deploy ml-project-service --image gcr.io/${GCP_PROJECT}/ml-project:latest --platform managed --region us-east1 --allow-unauthenticated
 
                         '''
                     }

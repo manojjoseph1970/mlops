@@ -6,3 +6,4 @@ mlops_project.egg-info/
 *.pyc
 *.csv
 *.db
+samplecode.ipynb

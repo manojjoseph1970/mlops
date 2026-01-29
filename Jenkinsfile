@@ -77,7 +77,7 @@ pipeline{
             }
         }
         
-        stage('Deploy to Google cloud run){
+        stage('Deploy to Google cloud run'){
             steps{
                 withCredentials([file(credentialsId: 'gcp-key' , variable : 'GOOGLE_APPLICATION_CREDENTIALS')]){
                     script{
